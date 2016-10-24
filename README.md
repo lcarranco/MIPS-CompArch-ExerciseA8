@@ -1,0 +1,2 @@
+# MIPS-CompArch-ExerciseA8
+This repository is for Homework #5 for Computer Architecture. This program reads in a positive integer using the SPIM system calls. If the integer is not positive, the program should terminate with the message "Invalid Entry"; otherwise the program should print out the names of the digits of the integers, delimited by exactly one space. For example, if the user entered "728" the output would be "Seven Two Eight".
