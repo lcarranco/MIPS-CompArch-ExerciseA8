@@ -8,10 +8,21 @@
 # }
 
 .data
-        var:    .word 25
-        str:    .asciiz "Enter a positive number: "
-        str1:   .asciiz "Invalid Entry"
-        Lten:   .byte 0x0A
+        var:            .word 25
+        str:            .asciiz "Enter a positive number: "
+        str1:           .asciiz "Invalid Entry"
+        stringZero:     .asciiz "Zero"
+        stringOne:      .asciiz "One"
+        stringTwo:      .asciiz "Two"
+        stringThree:    .asciiz "Three"
+        stringFour:     .asciiz "Four"
+        stringFive:     .asciiz "Five"
+        stringSix:      .asciiz "Six"
+        stringSeven:    .asciiz "Seven"
+        stringEight:    .asciiz "Eight"
+        stringNine:     .asciiz "Nine"
+        stringSpace:    .asciiz " "
+        Lten:           .byte 0x0A
 .text
         lb		$t0, Lten  
 
