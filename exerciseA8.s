@@ -7,29 +7,55 @@
 #     return 0;
 # }
 
-        .data
-str:    .asciiz "This is a program that will print out the words for an entered positive integer.\n\n"
-str1:   .asciiz "Enter a number (To exit enter '0'): "
-        .text
-        .globl main
+.data
+        var:    .word 25
+        str:    .asciiz "Enter a positive number: "
+        str1:   .asciiz "Invalid Entry"
+        Lten:   .byte 0x0A
+.text
+        lb		$t0, Lten  
 
-main:   li		$v0, 4		        # System call code to print string 
-        la		$a0, str	        # Print str
-        syscall
+        main:
+                li		$v0, 4		        # System call code to print string 
+                la		$a0, str	        # Print str
+                syscall
+                li		$v0, 5		        # System call code to read integer
+                syscall
+                move 	        $s0, $v0	        # Move integer to s0
+                blez            $s0, exit
+        
+        remainder:
+                blez            $s0, exit1:
+                div		$s0, $t0		# s0 / t0
+                mflo	        $t1			# t1 = floor(s0 / t0) 
+                mfhi	        $t2			# t2 = s0 mod t0 
+                move 	        $s0, $t1                # Replace s0 with quotient (t1)
+                move 	        $s1, $t2	        # Move remainder (t2) to s1
+                b		remainder		# Branch to remainder
+                
+                
 
-loop:   li		$v0, 4		        # System call code to print string 
-        la		$a0, str1	        # Print str1
-        syscall
-        li		$v0, 5		        # System call code to read integer
-        syscall
-        beq		$v0, $zero, exit	# If $v0 == zero then exit 
-        add		$s6, $s3, $s6		# Add i to array and store in array
-        move 	$s2, $v0		    # Move integer to $s2
-        add		$s6, $s2, $s6		# Add $s2 to array
-        j		loop			    # Jump to loop                                          
 
-exit:   li		$v0, 1		        # System call to print integer 
-        move 	$a0, $s6    		# Moved sum to $a0 for system call
-        syscall
-        li		$v0, 10		        # Exits the program
-        syscall
+
+
+
+                li		$v0, 9                  # Using sbrk
+                
+                lw		$a0, var
+                syscall
+                sw		$v0, var
+
+                exit:           
+                li		$v0, 4		        # System call code to print string 
+                la		$a0, str1	        # Print str1
+                syscall
+                li		$v0, 10
+                syscall
+
+        exit2:
+                li		$v0, 10
+                syscall
+                
+                 
+                
+                
