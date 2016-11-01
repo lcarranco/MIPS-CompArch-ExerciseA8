@@ -8,20 +8,19 @@
 # }
 
 .data
-        var:            .word 25
+        myInts:         .word 0:100
         str:            .asciiz "Enter a positive number: "
         str1:           .asciiz "Invalid Entry"
-        stringZero:     .asciiz "Zero"
-        stringOne:      .asciiz "One"
-        stringTwo:      .asciiz "Two"
-        stringThree:    .asciiz "Three"
-        stringFour:     .asciiz "Four"
-        stringFive:     .asciiz "Five"
-        stringSix:      .asciiz "Six"
-        stringSeven:    .asciiz "Seven"
-        stringEight:    .asciiz "Eight"
-        stringNine:     .asciiz "Nine"
-        stringSpace:    .asciiz " "
+        stringZero:     .asciiz " Zero "
+        stringOne:      .asciiz " One " 
+        stringTwo:      .asciiz " Two " 
+        stringThree:    .asciiz " Three " 
+        stringFour:     .asciiz " Four " 
+        stringFive:     .asciiz " Five " 
+        stringSix:      .asciiz " Six " 
+        stringSeven:    .asciiz " Seven " 
+        stringEight:    .asciiz " Eight " 
+        stringNine:     .asciiz " Nine " 
         Lone:           .byte 0x01
         Ltwo:           .byte 0x02
         Lthree:         .byte 0x03
@@ -42,7 +41,8 @@
         lb		$t6, Lseven
         lb		$t7, Leight
         lb		$t8, Lnine
-        lb		$t9, Lten  
+        lb		$t9, Lten
+.globl main
 
         main:
                 li		$v0, 4		        # System call code to print string 
@@ -52,11 +52,15 @@
                 syscall
                 move 	        $s0, $v0	        # Move integer to s0
                 blez            $s0, exit
+                li		$v0, 9                  # Allocate memory
+                li		$a0, 400                # 400 bytes
+                syscall                                 # v0 <-- address
+                move 	        $s2, $v0                # s2 first struct
         
         remainder:
                 blez            $s0, exit1:
                 div		$s0, $t9		# s0 / 10
-                mflo	        $s0			# t1 = floor(s0 / 10) 
+                mflo	        $s0			#  = floor(s0 / 10) 
                 mfhi	        $s1			# t2 = s0 mod 10 
                 b		remainder		# Branch to remainder
                 
@@ -66,10 +70,6 @@
 
 
 
-                li		$v0, 9                  # Using sbrk
-                lw		$a0, var
-                syscall
-                sw		$v0, var
 
         exit:           
                 li		$v0, 4		        # System call code to print string 
