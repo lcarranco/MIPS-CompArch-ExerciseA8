@@ -22,9 +22,27 @@
         stringEight:    .asciiz "Eight"
         stringNine:     .asciiz "Nine"
         stringSpace:    .asciiz " "
+        Lone:           .byte 0x01
+        Ltwo:           .byte 0x02
+        Lthree:         .byte 0x03
+        Lfour:          .byte 0x04
+        Lfive:          .byte 0x05
+        Lsix:           .byte 0x06
+        Lseven:         .byte 0x07
+        Leight:         .byte 0x08
+        Lnine:          .byte 0x09
         Lten:           .byte 0x0A
 .text
-        lb		$t0, Lten  
+        lb		$t0, Lone
+        lb		$t1, Ltwo
+        lb		$t2, Lthree
+        lb		$t3, Lfour
+        lb		$t4, Lfive
+        lb		$t5, Lsix
+        lb		$t6, Lseven
+        lb		$t7, Leight
+        lb		$t8, Lnine
+        lb		$t9, Lten  
 
         main:
                 li		$v0, 4		        # System call code to print string 
@@ -37,11 +55,9 @@
         
         remainder:
                 blez            $s0, exit1:
-                div		$s0, $t0		# s0 / t0
-                mflo	        $t1			# t1 = floor(s0 / t0) 
-                mfhi	        $t2			# t2 = s0 mod t0 
-                move 	        $s0, $t1                # Replace s0 with quotient (t1)
-                move 	        $s1, $t2	        # Move remainder (t2) to s1
+                div		$s0, $t9		# s0 / 10
+                mflo	        $s0			# t1 = floor(s0 / 10) 
+                mfhi	        $s1			# t2 = s0 mod 10 
                 b		remainder		# Branch to remainder
                 
                 
@@ -51,12 +67,11 @@
 
 
                 li		$v0, 9                  # Using sbrk
-                
                 lw		$a0, var
                 syscall
                 sw		$v0, var
 
-                exit:           
+        exit:           
                 li		$v0, 4		        # System call code to print string 
                 la		$a0, str1	        # Print str1
                 syscall
